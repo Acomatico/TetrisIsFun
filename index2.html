@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="author" content="ARodriguez">
+	<meta name="description" content="Tetris game">
+	<title>Tetris</title>
+	<script type="text/Javascript" src="index2.js"></script>
+	<style type="text/css">
+		*{
+			box-sizing:border-box;
+		}
+		body{
+			margin:0;			
+		}
+		section{
+			position:absolute;
+			top:10px;
+			left:300px;
+			margin: 0;
+			border:2px inset black;
+			background-color:rgba(230,230,230,0.5);
+		}
+		body > div{
+			position:absolute;
+			top:10px;
+			left:800px;
+			border:2px inset black;
+			background-color:rgba(230,230,230,0.5);
+			width:100px;
+			height:100px;
+			margin:20px;
+		}
+	</style>
+</head>
+<body onkeypress="Javascript:checkButton(event);">
+	<section id="juego" style="width:500px; height:600px; box-sizing:content-box;">
+	</section>
+	<div>
+	</div>
+	<input type="button" value="Start" onclick="Javascript:autorun()"/>
+</body>
+</html>
