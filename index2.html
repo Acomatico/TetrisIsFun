@@ -20,24 +20,34 @@
 			margin: 0;
 			border:2px inset black;
 			background-color:rgba(230,230,230,0.5);
+			overflow:hidden;
 		}
-		body > div{
+		#next{
 			position:absolute;
 			top:10px;
 			left:800px;
 			border:2px inset black;
 			background-color:rgba(230,230,230,0.5);
-			width:100px;
-			height:100px;
+			width:204px;
+			height:150px;
 			margin:20px;
+		}
+		div{
+			font-family:Papyrus;
 		}
 	</style>
 </head>
 <body onkeypress="Javascript:checkButton(event);">
 	<section id="juego" style="width:500px; height:600px; box-sizing:content-box;">
 	</section>
-	<div>
+	<div id="next">
 	</div>
-	<input type="button" value="Start" onclick="Javascript:autorun()"/>
+	<div style="margin:5px; border:2px outset black; width:175px;">
+		<h2>Puntuacion</h2>
+		<div id="puntuacion">
+	
+		</div>
+	</div>
+	<input type="button" value="Start" onclick="Javascript:autorun(this)"/>
 </body>
 </html>
