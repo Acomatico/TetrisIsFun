@@ -4,9 +4,12 @@ var filas;
 var columnas;
 var caida;
 var arrayTransf;
-function autorun(){
+var cuadrosNext;
+var puntuacion = 0;
+function autorun(boton){
+	boton.style.display = "none";
 	var fondo = window.document.getElementById("juego");
-	filas = ((parseInt(fondo.style.height))/50);
+	filas = ((parseInt(fondo.style.height))/50)+1;
 	columnas = (parseInt(fondo.style.width)/50);
 	arrayCuadros = new Array(filas)
 	arrayTransf = new Array(filas);
@@ -28,8 +31,8 @@ function autorun(){
 			cuadro.style.position = "absolute";
 			cuadro.style.bottom = (i*50)+"px";
 			cuadro.style.left = j*50+"px";
-			cuadro.style.backgroundColor = "darkblue";
-			cuadro.style.border = "2px outset lightblue"
+			//cuadro.style.backgroundColor = "darkblue";
+			cuadro.style.border = "2px outset black"
 			cuadro.style.display = "none";
 			
 			fila.appendChild(cuadro);
@@ -37,60 +40,92 @@ function autorun(){
 		}
 		
 	}
+	var next = window.document.getElementById("next");
+	cuadrosNext = new Array(4);
+	for(var i = 0; i < 4; i++){
+		cuadrosNext[i] = new Array(4);
+		var fila = window.document.createElement("div");
+		next.appendChild(fila);
+		for(var j = 0; j < 4; j++){
+			var cuadro = window.document.createElement("div");
+			cuadrosNext[i][j] = cuadro;
+			cuadro.style.width = "50px";
+			cuadro.style.height = "50px";
+			cuadro.style.position = "absolute";
+			cuadro.style.display = "none";
+			cuadro.style.top = i*50+"px";
+			cuadro.style.left = j*50+"px";
+			cuadro.style.border = "2px outset black";
+			
+			fila.appendChild(cuadro);
+		}
+	}
 	empezar()
 	
 }	
 
 class figura{
+	
+	
 	constructor(tipo){
 		
+		this.color;
 		if(tipo == "cuadrado"){
+			arrayPosiciones[12][4] = 1
+			arrayPosiciones[12][5] = 1
 			arrayPosiciones[11][4] = 1
 			arrayPosiciones[11][5] = 1
-			arrayPosiciones[10][4] = 1
-			arrayPosiciones[10][5] = 1
+			figura.color = "blue";
 		}
 		if( tipo == "linea"){
-			arrayPosiciones[11][3] = 1
-			arrayPosiciones[11][4] = 1
-			arrayPosiciones[11][5] = 1
-			arrayPosiciones[11][6] = 1
+			arrayPosiciones[12][3] = 1
+			arrayPosiciones[12][4] = 1
+			arrayPosiciones[12][5] = 1
+			arrayPosiciones[12][6] = 1
+			figura.color  = "purple";
 		}
 		if(tipo == "triangulo"){
-			arrayPosiciones[11][4] = 1
+			arrayPosiciones[12][4] = 1
+			arrayPosiciones[12][5] = 1
+			arrayPosiciones[12][6] = 1
 			arrayPosiciones[11][5] = 1
-			arrayPosiciones[11][6] = 1
-			arrayPosiciones[10][5] = 1
+			figura.color = "orange"
 		}
 		if(tipo == "ele"){
-			arrayPosiciones[11][4] = 1
-			arrayPosiciones[11][5] = 1
+			arrayPosiciones[12][4] = 1
+			arrayPosiciones[12][5] = 1
+			arrayPosiciones[12][6] = 1
 			arrayPosiciones[11][6] = 1
-			arrayPosiciones[10][6] = 1
+			figura.color = "lime";
 		}
 		if(tipo == "ele2"){
+			arrayPosiciones[12][4] = 1
+			arrayPosiciones[12][5] = 1
+			arrayPosiciones[12][6] = 1
 			arrayPosiciones[11][4] = 1
-			arrayPosiciones[11][5] = 1
-			arrayPosiciones[11][6] = 1
-			arrayPosiciones[10][4] = 1
+			figura.color = "yellow";
 		}
 		if(tipo == "silla"){
-			arrayPosiciones[11][4] = 1
-			arrayPosiciones[11][5] = 1
-			arrayPosiciones[10][5] = 1
-			arrayPosiciones[10][6] = 1
-		}
-		if(tipo == "silla2"){
+			arrayPosiciones[12][4] = 1
+			arrayPosiciones[12][5] = 1
 			arrayPosiciones[11][5] = 1
 			arrayPosiciones[11][6] = 1
-			arrayPosiciones[10][5] = 1
-			arrayPosiciones[10][4] = 1
+			figura.color = "cyan";
+		}
+		if(tipo == "silla2"){
+			arrayPosiciones[12][5] = 1
+			arrayPosiciones[12][6] = 1
+			arrayPosiciones[11][5] = 1
+			arrayPosiciones[11][4] = 1
+			figura.color = "red";
+			
 		}
 		for(var i = 0; i < filas; i++){
 			for(var j = 0; j < columnas; j++){
 				
 				if(arrayPosiciones[i][j] == 1){
 					arrayCuadros[i][j].style.display = "block";
+					arrayCuadros[i][j].style.backgroundColor = figura.color;
 				}
 			}
 		}
@@ -102,17 +137,22 @@ class figura{
 			for(var j = 0; j < columnas; j++){
 				if(arrayPosiciones[i][j] == 2){
 					arrayCuadros[i][j].style.display = "block";
-					arrayCuadros[i][j].style.backgroundColor = "red"
-					continue
+					arrayCuadros[i][j].style.backgroundColor = "grey"
+					arrayTransf[i][j] = 0;
+					continue;
 				}
 				if(arrayTransf[i][j] == 1){
 					arrayPosiciones[i][j] = 1;
 					arrayCuadros[i][j].style.display = "block";
+					arrayCuadros[i][j].style.backgroundColor = figura.color
 				}
 				if(arrayTransf[i][j] == 0 || arrayPosiciones[i][j] == 0){
 					arrayCuadros[i][j].style.display = "none";
 				}
 				arrayTransf[i][j] = 0;
+				if(arrayPosiciones[i][j] == 3){
+					arrayPosiciones[i][j] = 0
+				}
 			}
 			
 		}
@@ -123,7 +163,10 @@ class figura{
 				if(arrayPosiciones[i][j] == 3){
 					arrayTransf[i][j] = 1;
 				}
-				arrayTransf[i][j] = 0;
+				else{
+					arrayTransf[i][j] = 0;
+				}
+				
 			}
 			
 		}
@@ -146,31 +189,59 @@ class figura{
 		this.comprobar()
 	}
 	comprobar(){
+		for(var k = 0; k < columnas;k++){
+			if(arrayPosiciones[11][k] == 2){
+				clearInterval(caida);
+				alert("Game Over");
+				return;
+			}
+		}
+		var contador = 0;
 		for(var i = 0; i < filas; i++){
-			if(arrayPosiciones[i][0] == 2 && arrayPosiciones[i][1] == 2 && arrayPosiciones[i][2] == 2 && arrayPosiciones[i][3] == 2 && arrayPosiciones[i][4] == 2 && arrayPosiciones[i][5] == 2 && arrayPosiciones[i][6] == 2 && arrayPosiciones[i][7] == 2 && arrayPosiciones[i][8] == 2 &&arrayPosiciones	[i][9] == 2){
+			if(arrayPosiciones[i][0] == 2 && arrayPosiciones[i][1] == 2 && arrayPosiciones[i][2] == 2 && arrayPosiciones[i][3] == 2 && arrayPosiciones[i][4] == 2 && arrayPosiciones[i][5] == 2 && arrayPosiciones[i][6] == 2 && arrayPosiciones[i][7] == 2 && arrayPosiciones[i][8] == 2 &&arrayPosiciones[i][9] == 2){
 				for(var j = 0; j < columnas;j++){
-					//arrayPosiciones[i][j] = 0
+					arrayPosiciones[i][j] = 0
+					puntuacion = puntuacion + 10
+					var scoreBoard = window.document.getElementById("puntuacion");
+					scoreBoard.innerHTML = puntuacion
 				}
-				//this.recalcular()
-				//this.limpiar(i)
+				this.recalcular();
+				this.limpiar(i);
+				contador++
 			}
-			else{
-				empezar()
-				return
-			}
+			
+		}
+		if(contador == 0){
+			empezar()
 		}
 		
 	}
 	limpiar(distancia){
-		for(var i = 0; i < distancia+1;i++){
+		
+		console.log(distancia)
+		for(var i = distancia; i < filas; i++){
 			for(var j = 0; j < columnas;j++){
 				if(arrayPosiciones[i][j] == 2){
-					arrayPosiciones[i][j] = 1;
+					arrayPosiciones[i][j] = 1;					
 				}
 			}
 		}
-		console.log(caida)
-		caida = setInterval(caer,500);
+		console.log(arrayPosiciones)
+		this.limpiar2()
+	}
+	limpiar2(){
+		for(var i = 0; i < filas ;i++){
+			for(var j = 0; j < columnas;j++){
+				if(arrayPosiciones[i][j] == 1){
+					
+					caer()
+					return
+				}
+			}
+		}
+		
+		empezar()
+		
 	}
 	moverAbajo(){
 		for(var i = 0; i < filas; i++){
@@ -283,6 +354,7 @@ class figura{
 					}
 					arrayPosiciones[i][j] = 3;
 					arrayTransf[Ifinal][Jfinal] = 1
+					
 				}
 			}
 		}
@@ -296,21 +368,117 @@ class figura{
 		this.recalcular()
 	}
 }
-
+var nextFigura;
+var aleatorio = 0;
 var figuraNueva;
 var caida;
 var counter = 0;
 function empezar(){
 	var arrayFiguras = ["cuadrado", "linea", "silla", "silla2", "ele", "ele2", "triangulo"];
-	var random = Math.trunc(arrayFiguras.length*Math.random())
-	var figuraElegida = arrayFiguras[random];
+	
+	if(aleatorio == 0){
+		var random = Math.trunc(arrayFiguras.length*Math.random())
+		var figuraElegida = arrayFiguras[random];
+		aleatorio++
+	}
+	else{
+		var figuraElegida = nextFigura
+	}
+	var random2 =  Math.trunc(arrayFiguras.length*Math.random())
+	nextFigura = arrayFiguras[random2];
+	
 	window.figuraNueva = new figura(figuraElegida);
 	caida = setInterval(caer,500);
+	siguienteCuadro(nextFigura);
 	//console.log(arrayPosiciones)
 	
 }
 
+function siguienteCuadro(tipo){
+	var color;
+	if(tipo == "cuadrado"){
+		color = "blue";
+	}
+	if(tipo == "linea"){
+		color = "purple";
+	}
+	if(tipo == "triangulo"){
+		color = "orange";
+	}
+	if(tipo == "ele"){
+		color = "lime";
+	}
+	if(tipo == "ele2"){
+		color = "yellow";
+	}
+	if(tipo == "silla"){
+		color = "cyan";
+	}
+	if(tipo == "silla2"){
+		color = "red";
+	}
+	for(var i = 0; i < 4; i++){
+		for(var j = 0; j < 4;j++){
+			cuadrosNext[i][j].style.display = "none";
+			cuadrosNext[i][j].style.backgroundColor = color;
+		}
+	}
+	
+	console.log(cuadrosNext)
+		if(tipo == "cuadrado"){
+			cuadrosNext[0][2].style.display = "block";
+			cuadrosNext[0][1].style.display = "block";
+			cuadrosNext[1][2].style.display = "block";
+			cuadrosNext[1][1].style.display = "block";
+			
+		}
+		if( tipo == "linea"){
+			cuadrosNext[0][0].style.display = "block"
+			cuadrosNext[0][1].style.display = "block"
+			cuadrosNext[0][2].style.display = "block"
+			cuadrosNext[0][3].style.display = "block";
+			
+		}
+		if(tipo == "triangulo"){
+			cuadrosNext[0][1].style.display = "block";
+			cuadrosNext[0][2].style.display = "block";
+			cuadrosNext[0][3].style.display = "block";
+			cuadrosNext[1][2].style.display = "block";
+			
+		}
+		if(tipo == "ele"){
+			cuadrosNext[0][0].style.display = "block";
+			cuadrosNext[0][1].style.display = "block";
+			cuadrosNext[0][2].style.display = "block";
+			cuadrosNext[1][2].style.display = "block";
+			
+		}
+		if(tipo == "ele2"){
+			cuadrosNext[0][0].style.display = "block";
+			cuadrosNext[0][1].style.display = "block";
+			cuadrosNext[0][2].style.display = "block";
+			cuadrosNext[1][0].style.display = "block";
+			
+		}
+		if(tipo == "silla"){
+			cuadrosNext[0][0].style.display = "block";
+			cuadrosNext[0][1].style.display = "block";
+			cuadrosNext[1][1].style.display = "block";
+			cuadrosNext[1][2].style.display = "block";
+			
+		}
+		if(tipo == "silla2"){
+			cuadrosNext[0][1].style.display = "block";
+			cuadrosNext[0][2].style.display = "block";
+			cuadrosNext[1][1].style.display = "block";
+			cuadrosNext[1][0].style.display = "block";
+			
+			
+		}
+}
+
 function caer(){
+	
 	counter = 0;
 	window.figuraNueva.moverAbajo();
 	for(var i = 0; i < filas; i++){
@@ -339,7 +507,25 @@ function esperar(){
 		return;
 	}
 	counter++
-	window.figuraNueva.parar();
+	for(var i = 0; i < filas; i++){
+		for(var j = 0; j < columnas; j++){
+			if(arrayPosiciones[i][j] == 1){
+				if(i > 0){
+					if(arrayPosiciones[i-1][j] == 2){
+						window.figuraNueva.parar();
+						return
+					}
+				}
+				if(i == 0){
+					window.figuraNueva.parar();
+					return
+				}
+			}
+		}
+	}
+	window.figuraNueva.moverAbajo()
+	caida = setInterval(caer,500);
+	
 }
 
 
